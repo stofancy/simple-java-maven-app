@@ -2,6 +2,14 @@ pipeline {
     agent any
 
     stages {
+        stage('hello'){
+            steps {
+                script {
+                    def branchName = env.BRANCH_NAME
+                    echo "Branch name: ${branchName}"
+                }
+            }
+        }
         stage('build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
