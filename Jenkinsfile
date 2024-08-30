@@ -35,20 +35,22 @@
 //     }
 // }
 node {
-    stage('hello') {
-        script {
-            def branchName = env.BRANCH_NAME
-            echo "Branch name: ${branchName}"
+    docker.image('maven:3.8.1-adoptopenjdk-11').inside {
+        stage('hello') {
+            script {
+                def branchName = env.BRANCH_NAME
+                echo "Branch name: ${branchName}"
+            }
         }
-    }
-    stage('build') {
-        sh 'mvn -B -DskipTests clean package'
-    }
-    stage('test') {
-        sh 'mvn test'
-        junit 'target/surefire-reports/*.xml'
-    }
-    stage('deliver') {
-        sh './jenkins/scripts/deliver.sh'
+        stage('build') {
+            sh 'mvn -B -DskipTests clean package'
+        }
+        stage('test') {
+            sh 'mvn test'
+            junit 'target/surefire-reports/*.xml'
+        }
+        stage('deliver') {
+            sh './jenkins/scripts/deliver.sh'
+        }
     }
 }
