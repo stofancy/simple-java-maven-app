@@ -11,7 +11,9 @@ set +x
 echo 'The following command extracts the value of the <name/> element'
 echo 'within <project/> of your Java/Maven project''s "pom.xml" file.'
 set -x
-NAME=`mvn -q -DforceStdout help:evaluate -Dexpression=project.name`
+NAME_VERSION=$(mvn -q -DforceStdout help:evaluate -Dexpression=project.name -Dexpression=project.version)
+NAME=$(echo "$NAME_VERSION" | grep -oP '(?<=name: ).*')
+VERSION=$(echo "$NAME_VERSION" | grep -oP '(?<=version: ).*')
 set +x
 
 echo 'The following command behaves similarly to the previous one but'
